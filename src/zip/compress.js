@@ -1,9 +1,12 @@
 import zlib from "zlib";
 import fs from "fs";
 import { pipeline } from "stream/promises";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
-const fileToCompress = "src/zip/files/fileToCompress.txt";
-const compressedFile = "src/zip/files/archive.gz";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const fileToCompress = join(__dirname, "files", "fileToCompress.txt");
+const compressedFile = join(__dirname, "files", "archive.gz");
 
 const compress = async () => {
   const readStream = fs.createReadStream(fileToCompress);
@@ -14,6 +17,7 @@ const compress = async () => {
     await pipeline(readStream, gzipStream, writeStream);
     console.log("Compression completed");
   } catch (error) {
+    //TODO: change error
     console.error("Compression failed:", error);
   }
 };

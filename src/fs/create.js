@@ -1,13 +1,13 @@
 import fs from "node:fs/promises";
-import path from "node:path";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
 const fileContent = "I am fresh and young";
-const folderPath = "src/fs/files";
 const fileName = "fresh.txt";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const filePath = join(__dirname, "files", fileName);
 
 const create = async () => {
-  const filePath = path.join(folderPath, fileName);
-
   try {
     await fs.access(filePath);
     throw new Error("FS operation failed");

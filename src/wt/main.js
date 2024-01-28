@@ -1,12 +1,16 @@
 import { Worker } from "worker_threads";
 import os from "os";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const pathToWorker = join(__dirname, "worker.js");
 
 const numCPUs = os.cpus().length;
 
 const createWorker = async (id) => {
   return new Promise((resolve, reject) => {
-    //TODO: refactor path
-    const worker = new Worker("./src/wt/worker.js", { workerData: id });
+    const worker = new Worker(pathToWorker, { workerData: id });
 
     worker.on("message", (message) => {
       console.log(`Received result from Worker ${id}:`, message);

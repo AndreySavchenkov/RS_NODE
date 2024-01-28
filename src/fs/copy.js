@@ -1,9 +1,11 @@
 import fs from "node:fs/promises";
-import path from "node:path";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
 const newFolderName = "files_copy";
-const folderPath = path.join("src/fs/files");
-const folderPathForCopy = path.join("src/fs", newFolderName);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const folderPath = join(__dirname, "files");
+const folderPathForCopy = join(__dirname, newFolderName);
 
 const copy = async () => {
   try {
@@ -17,10 +19,13 @@ const copy = async () => {
       const files = await fs.readdir(folderPath);
 
       files.map(async (file) => {
-        await fs.copyFile(`${folderPath}/${file}`, `${folderPathForCopy}/${file}`);
+        await fs.copyFile(
+          `${folderPath}/${file}`,
+          `${folderPathForCopy}/${file}`
+        );
       });
 
-      console.log('Files copied successfully');
+      console.log("Files copied successfully");
     } else {
       throw error;
     }

@@ -1,9 +1,12 @@
 import zlib from "zlib";
 import fs from "fs";
 import { pipeline } from "stream/promises";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
-const compressedFile = "src/zip/files/archive.gz";
-const decompressedFile = "src/zip/files/decompressedFile.txt";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const decompressedFile = join(__dirname, "files", "decompressedFile.txt");
+const compressedFile = join(__dirname, "files", "archive.gz");
 
 const decompress = async () => {
   const readStream = fs.createReadStream(compressedFile);
@@ -14,6 +17,7 @@ const decompress = async () => {
     await pipeline(readStream, gunzipStream, writeStream);
     console.log("Decompression completed");
   } catch (error) {
+    //TODO: change error
     console.error("Decompression failed:", error);
   }
 };
